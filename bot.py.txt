@@ -1,0 +1,32 @@
+import telebot
+from telebot import types
+
+TOKEN = '8782262855:AAFOiqBttee7LzeEtMEBDuNLpSL6TiZWNAE'
+bot = telebot.TeleBot(TOKEN)
+
+def main_menu():
+    markup = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
+    item1 = types.KeyboardButton('📖 أذكار الصباح')
+    item2 = types.KeyboardButton('🌙 أذكار المساء')
+    item3 = types.KeyboardButton('🤲 دعاء')
+    item4 = types.KeyboardButton('🎧 قرآن')
+    markup.add(item1, item2, item3, item4)
+    return markup
+
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    bot.send_message(message.chat.id, "مرحباً بك! اختر من القائمة:", reply_markup=main_menu())
+
+@bot.message_handler(func=lambda message: True)
+def handle_all(message):
+    if message.text == '📖 أذكار الصباح':
+        bot.send_message(message.chat.id, "أذكار الصباح: أصبحنا وأصبح الملك لله.")
+    elif message.text == '🌙 أذكار المساء':
+        bot.send_message(message.chat.id, "أذكار المساء: أمسينا وأمسى الملك لله.")
+    elif message.text == '🤲 دعاء':
+        bot.send_message(message.chat.id, "اللهم إنا نسألك الهدى والتقى.")
+    elif message.text == '🎧 قرآن':
+        bot.send_message(message.chat.id, "المصحف كامل: https://quran.com")
+
+print("البوت الجديد شغال.. جرب اضغط /start")
+bot.infinity_polling()
